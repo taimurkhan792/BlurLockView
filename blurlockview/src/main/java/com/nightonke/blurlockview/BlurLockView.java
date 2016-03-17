@@ -1,8 +1,12 @@
 package com.nightonke.blurlockview;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -22,8 +26,11 @@ public class BlurLockView extends FrameLayout
     private int errorInputTimes = 0;
     private boolean returnInputPasswordAlways = false;
     private boolean autoQuit = true;
+    private Typeface typeface;
 
     private Stack<String> passwordStack = new Stack<>();
+
+    private Indicator indicator;
 
     private BigButtonView[] bigButtonViews;
     private BlurView mBlurView;
@@ -69,18 +76,32 @@ public class BlurLockView extends FrameLayout
         }
 
         mBlurView = (BlurView)findViewById(R.id.blurview);
+        
+        Resources resources = getResources();
+
+        indicator = (Indicator)findViewById(R.id.indicator);
+        indicator.setPasswordLength(4);
+        
         leftButton = (TextView)findViewById(R.id.left_button);
+        leftButton.setTextColor(ContextCompat.getColor(context, R.color.default_left_button_text_color));
+        leftButton.setTextSize(resources.getInteger(R.integer.default_left_button_text_size));
         leftButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onLeftButtonClickListener != null) onLeftButtonClickListener.onClick();
             }
         });
+
         rightButton = (TextView)findViewById(R.id.right_button);
+        rightButton.setTextColor(ContextCompat.getColor(context, R.color.default_right_button_text_color));
+        rightButton.setTextSize(resources.getInteger(R.integer.default_right_button_text_size));
         rightButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (passwordStack.size() > 0) passwordStack.pop();
+                if (passwordStack.size() > 0) {
+                    passwordStack.pop();
+                    indicator.setNumber(passwordStack.size());
+                }
             }
         });
     }
@@ -94,7 +115,9 @@ public class BlurLockView extends FrameLayout
         if (correctPassword == null) {
             throw new RuntimeException("The correct password has NOT been set!");
         }
+        if (passwordStack.size() >= passwordLength) return;
         passwordStack.push(string);
+        indicator.setNumber(passwordStack.size());
         StringBuilder nowPassword = new StringBuilder("");
         for (String s : passwordStack) {
             nowPassword.append(s);
@@ -121,6 +144,21 @@ public class BlurLockView extends FrameLayout
                 // perform the clear animation
             }
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getPointerCount() > 1) return true;
+        return super.dispatchTouchEvent(event);
+    }
+
+    public void setTypeface(Typeface typeface) {
+        this.typeface = typeface;
+        if (type.equals(Password.NUMBER)) {
+            for (int i = 0; i < 10; i++) bigButtonViews[i].setTypeFace(typeface);
+        }
+        leftButton.setTypeface(typeface);
+        rightButton.setTypeface(typeface);
     }
 
     public void setType(Password type) {

@@ -8,6 +8,11 @@
     <color name="default_big_button_sub_text_color">#ffffff</color>
     <integer name="default_big_button_sub_text_size">12</integer>
 
+    <integer name="default_left_button_text_size">20</integer>
+    <color name="default_left_button_text_color">#ffffff</color>
+    <integer name="default_right_button_text_size">20</integer>
+    <color name="default_right_button_text_color">#ffffff</color>
+
     <string-array
         name="default_big_button_text">
         <item>0</item>
@@ -38,6 +43,9 @@
 
     <integer name="default_blur_radius">11</integer>
     <integer name="default_downsample_factor">6</integer>
-    <color name="default_overlay_color">#99FFFFFF</color>
+    <color name="default_overlay_color">#99999999</color>
+
+    <color name="default_button_press">#66ffffff</color>
+    <color name="default_indicator">#66ffffff</color>
 
 </resources>

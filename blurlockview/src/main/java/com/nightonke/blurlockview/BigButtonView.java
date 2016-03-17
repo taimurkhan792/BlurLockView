@@ -3,8 +3,11 @@ package com.nightonke.blurlockview;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -74,6 +77,11 @@ public class BigButtonView extends FrameLayout {
         frameLayout.setLayoutParams(layoutParams);
     }
 
+    public void setTypeFace(Typeface typeFace) {
+        text.setTypeface(typeFace);
+        subText.setTypeface(typeFace);
+    }
+
     /**
      * Set the string of the text.
      *
@@ -124,14 +132,40 @@ public class BigButtonView extends FrameLayout {
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getPointerCount() > 1) return true;
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 if (onPressListener != null) onPressListener.onPress(textString);
                 clickEffectAnimator.cancel();
                 clickEffect.setAlpha(1);
                 break;
+//            case MotionEvent.ACTION_MOVE:
+//                int[] xy = new int[2];
+//                frameLayout.getLocationOnScreen(xy);
+//                float midX = (frameLayout.getLeft() + frameLayout.getRight()) / 2;
+//                float midY = (frameLayout.getTop() + frameLayout.getBottom()) / 2;
+//                float nowX = frameLayout.getLeft() + event.getX();
+//                float nowY = frameLayout.getTop() + event.getY();
+//                if ((frameLayout.getRight() - frameLayout.getLeft()) / 2
+//                        <
+//                    Math.sqrt(
+//                            (nowX - midX) * (nowX - midX)
+//                          + (nowY - midY) * (nowY - midY))) {
+//                    clickEffectAnimator.start();
+//                }
+//                break;
             case MotionEvent.ACTION_UP:
+//                xy = new int[2];
+//                frameLayout.getLocationOnScreen(xy);
+//                midX = (frameLayout.getLeft() + frameLayout.getRight()) / 2;
+//                midY = (frameLayout.getTop() + frameLayout.getBottom()) / 2;
+//                nowX = frameLayout.getLeft() + event.getX();
+//                nowY = frameLayout.getTop() + event.getY();
+//                if ((frameLayout.getRight() - frameLayout.getLeft()) / 2
+//                        <
+//                        Math.sqrt(
+//                                (nowX - midX) * (nowX - midX)
+//                                        + (nowY - midY) * (nowY - midY))) {
+//                }
                 clickEffectAnimator.start();
                 break;
             default:break;
