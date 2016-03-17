@@ -3,11 +3,9 @@ package com.nightonke.blurlockview;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +19,7 @@ import android.widget.TextView;
 /**
  * Created by Weiping on 2016/3/16.
  */
+
 public class BigButtonView extends FrameLayout {
 
     private FrameLayout frameLayout;
@@ -30,6 +29,7 @@ public class BigButtonView extends FrameLayout {
     private String textString = "";
     private String subTextString = "";
     private ObjectAnimator clickEffectAnimator;
+    private int duration = 500;
     private OnPressListener onPressListener;
 
     public BigButtonView(Context context) {
@@ -58,25 +58,108 @@ public class BigButtonView extends FrameLayout {
         clickEffect = findViewById(R.id.click_effect);
         clickEffect.setAlpha(0);
         clickEffectAnimator = ObjectAnimator.ofFloat(clickEffect, "alpha", 1f, 0f);
-        clickEffectAnimator.setDuration(500);
+        clickEffectAnimator.setDuration(duration);
     }
 
+    /**
+     * Set the listener, for returning what happened to BlurLockView.
+     *
+     * @param onPressListener OnPressListener.
+     */
     public void setOnPressListener(OnPressListener onPressListener) {
         this.onPressListener = onPressListener;
     }
 
+    /**
+     * Set the width of the button.
+     *
+     * @param width Width, in pixels.
+     */
     public void setWidth(int width) {
         ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
         layoutParams.width = width;
         frameLayout.setLayoutParams(layoutParams);
     }
 
+    /**
+     * Set the height of the button.
+     *
+     * @param height Height, in pixels.
+     */
     public void setHeight(int height) {
         ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
         layoutParams.height = height;
         frameLayout.setLayoutParams(layoutParams);
     }
 
+    /**
+     * Set the resource of background.
+     *
+     * @param resourceId ResourceId.
+     */
+    public void setBackground(int resourceId) {
+        frameLayout.setBackgroundResource(resourceId);
+    }
+
+    /**
+     * Set the resource of click effect.
+     *
+     * @param resourceId ResourceId.
+     */
+    public void setEffect(int resourceId) {
+        clickEffect.setBackgroundResource(resourceId);
+    }
+
+    /**
+     * Set the duration of the effect.
+     *
+     * @param duration Duration, in ms.
+     */
+    public void setEffectDuration(int duration) {
+        this.duration = duration;
+    }
+
+    /**
+     * Set the text size of the main text.
+     *
+     * @param size Text size, in sp.
+     */
+    public void setTextSize(int size) {
+        text.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+    }
+
+    /**
+     * Set the text size of the sub text.
+     *
+     * @param size Text size, in sp.
+     */
+    public void setSubTextSize(int size) {
+        subText.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+    }
+
+    /**
+     * Set the text color of main text.
+     *
+     * @param color Color.
+     */
+    public void setTextColor(int color) {
+        text.setTextColor(color);
+    }
+
+    /**
+     * Set the text color of sub text.
+     *
+     * @param color Color.
+     */
+    public void setSubTextColor(int color) {
+        subText.setTextColor(color);
+    }
+
+    /**
+     * Set font of button.
+     *
+     * @param typeFace New font.
+     */
     public void setTypeFace(Typeface typeFace) {
         text.setTypeface(typeFace);
         subText.setTypeface(typeFace);
@@ -138,34 +221,7 @@ public class BigButtonView extends FrameLayout {
                 clickEffectAnimator.cancel();
                 clickEffect.setAlpha(1);
                 break;
-//            case MotionEvent.ACTION_MOVE:
-//                int[] xy = new int[2];
-//                frameLayout.getLocationOnScreen(xy);
-//                float midX = (frameLayout.getLeft() + frameLayout.getRight()) / 2;
-//                float midY = (frameLayout.getTop() + frameLayout.getBottom()) / 2;
-//                float nowX = frameLayout.getLeft() + event.getX();
-//                float nowY = frameLayout.getTop() + event.getY();
-//                if ((frameLayout.getRight() - frameLayout.getLeft()) / 2
-//                        <
-//                    Math.sqrt(
-//                            (nowX - midX) * (nowX - midX)
-//                          + (nowY - midY) * (nowY - midY))) {
-//                    clickEffectAnimator.start();
-//                }
-//                break;
             case MotionEvent.ACTION_UP:
-//                xy = new int[2];
-//                frameLayout.getLocationOnScreen(xy);
-//                midX = (frameLayout.getLeft() + frameLayout.getRight()) / 2;
-//                midY = (frameLayout.getTop() + frameLayout.getBottom()) / 2;
-//                nowX = frameLayout.getLeft() + event.getX();
-//                nowY = frameLayout.getTop() + event.getY();
-//                if ((frameLayout.getRight() - frameLayout.getLeft()) / 2
-//                        <
-//                        Math.sqrt(
-//                                (nowX - midX) * (nowX - midX)
-//                                        + (nowY - midY) * (nowY - midY))) {
-//                }
                 clickEffectAnimator.start();
                 break;
             default:break;
@@ -177,5 +233,4 @@ public class BigButtonView extends FrameLayout {
     public interface OnPressListener {
         void onPress(String string);
     }
-
 }

@@ -4,4 +4,13 @@
     <string name="password_type">Password Type</string>
     <string name="password_number">Number password</string>
     <string name="password_text">Text Password</string>
+
+    <string name="show_duration">Show Duration</string>
+
+    <string name="show_direction">Show Direction</string>
+
+    <string name="ease_type">Show Ease Type</string>
+
+    <string name="use_same_ease_type_back">Use same ease type to hide.</string>
+
 </resources>

@@ -12,7 +12,7 @@
         android:id="@+id/click_effect"
         android:layout_width="@dimen/default_big_button_width"
         android:layout_height="@dimen/default_big_button_height"
-        android:background="@drawable/button_click_effect"
+        android:background="@drawable/button_effect"
         />
 
     <LinearLayout
