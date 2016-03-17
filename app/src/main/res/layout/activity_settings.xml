@@ -82,6 +82,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:text="@string/hide_duration"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <SeekBar
+                android:id="@+id/hide_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="8"
+                android:progress="0"
+                />
+
+            <TextView
+                android:id="@+id/hide_duration_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|end"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:text="@string/show_direction"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -100,6 +125,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:text="@string/hide_direction"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <RadioGroup
+                android:id="@+id/group_hide_direction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+            </RadioGroup>
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:text="@string/ease_type"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -114,12 +157,23 @@
 
             </RadioGroup>
 
-            <CheckBox
-                android:id="@+id/same_ease_type_back"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/use_same_ease_type_back"
-                android:checked="false"
+                android:textColor="@android:color/black"
+                android:text="@string/set_password"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:hint="@string/password_hint"
+                android:text="1234"
                 />
 
         </LinearLayout>

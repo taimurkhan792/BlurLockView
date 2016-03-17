@@ -21,6 +21,7 @@ public class Indicator extends LinearLayout {
     }
 
     public void setPasswordLength(int length) {
+        removeAllViews();
         dots = new Dot[length];
 
         for(int i = 0; i < length; i++) {
@@ -38,19 +39,19 @@ public class Indicator extends LinearLayout {
         }
     }
 
-    public void setNumber(int number) {
-        if (this.number == number) return;
-        else {
-            if (this.number > number) {
-                // delete
-                dots[this.number - 1].setSelected(false);
-            } else {
-                // add
-                dots[this.number].setSelected(true);
-            }
-        }
-        this.number = number;
+    public void add() {
+        if (number == dots.length) return;
+        dots[number++].setSelected(true);
     }
 
+    public void delete() {
+        if (number == 0) return;
+        dots[--number].setSelected(false);
+    }
+
+    public void clear() {
+        number = 0;
+        for (int i = 0; i < dots.length; i++) dots[i].setSelected(false);
+    }
 
 }

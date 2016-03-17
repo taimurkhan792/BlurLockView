@@ -6,11 +6,23 @@
     <string name="password_text">Text Password</string>
 
     <string name="show_duration">Show Duration</string>
+    <string name="hide_duration">Hide Duration</string>
 
     <string name="show_direction">Show Direction</string>
+    <string name="hide_direction">hide Direction</string>
 
     <string name="ease_type">Show Ease Type</string>
 
-    <string name="use_same_ease_type_back">Use same ease type to hide.</string>
+    <string name="set_password">Set Password</string>
+    <string name="password_hint">Write your password here</string>
+    <string name="password_is_empty">Please input the password</string>
+    <string name="password_too_long">Password too long</string>
+
+    <string name="click_to_show">Click to show BlurLockView</string>
+
+    <string name="password_correct">Password correct</string>
+    <string name="password_incorrect">Password incorrect</string>
+
+
 
 </resources>

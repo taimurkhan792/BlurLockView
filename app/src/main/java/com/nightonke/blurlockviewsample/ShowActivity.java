@@ -6,15 +6,18 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nightonke.blurlockview.BlurLockView;
+import com.nightonke.blurlockview.Directions.HideType;
 import com.nightonke.blurlockview.Directions.ShowType;
 import com.nightonke.blurlockview.Eases.EaseType;
 
 public class ShowActivity extends AppCompatActivity
         implements
         View.OnClickListener,
-        BlurLockView.OnPasswordInputListener {
+        BlurLockView.OnPasswordInputListener,
+        BlurLockView.OnLeftButtonClickListener {
 
     private BlurLockView blurLockView;
     private ImageView imageView;
@@ -33,20 +36,30 @@ public class ShowActivity extends AppCompatActivity
 
         blurLockView = (BlurLockView)findViewById(R.id.blurlockview);
         blurLockView.setBlurredView(imageView);
-        blurLockView.setCorrectPassword("1234");
-        blurLockView.setTranslationY(blurLockView.getHeight());
+        blurLockView.setCorrectPassword(getIntent().getStringExtra("PASSWORD"));
 
-        findViewById(R.id.show).setOnClickListener(this);
+        blurLockView.setOnLeftButtonClickListener(this);
+        blurLockView.setOnPasswordInputListener(this);
+
+        imageView.setOnClickListener(this);
     }
 
     @Override
     public void correct(String inputPassword) {
-
+        Toast.makeText(this,
+                R.string.password_correct,
+                Toast.LENGTH_SHORT).show();
+        blurLockView.hide(
+                getIntent().getIntExtra("HIDE_DURATION", 1000),
+                getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
+                getEaseType(getIntent().getIntExtra("EASE_TYPE", 30)));
     }
 
     @Override
     public void incorrect(String inputPassword) {
-
+        Toast.makeText(this,
+                R.string.password_incorrect,
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -57,7 +70,7 @@ public class ShowActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.show:
+            case R.id.image:
                 blurLockView.show(
                         getIntent().getIntExtra("SHOW_DURATION", 1000),
                         getShowType(getIntent().getIntExtra("SHOW_DIRECTION", 0)),
@@ -66,6 +79,14 @@ public class ShowActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onClick() {
+        blurLockView.hide(
+                getIntent().getIntExtra("HIDE_DURATION", 1000),
+                getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
+                getEaseType(getIntent().getIntExtra("EASE_TYPE", 30)));
+    }
+    
     private ShowType getShowType(int p) {
         ShowType showType = ShowType.FROM_TOP_TO_BOTTOM;
         switch (p) {
@@ -73,6 +94,17 @@ public class ShowActivity extends AppCompatActivity
             case 1: showType = ShowType.FROM_RIGHT_TO_LEFT; break;
             case 2: showType = ShowType.FROM_BOTTOM_TO_TOP; break;
             case 3: showType = ShowType.FROM_LEFT_TO_RIGHT; break;
+        }
+        return showType;
+    }
+
+    private HideType getHideType(int p) {
+        HideType showType = HideType.FROM_TOP_TO_BOTTOM;
+        switch (p) {
+            case 0: showType = HideType.FROM_TOP_TO_BOTTOM; break;
+            case 1: showType = HideType.FROM_RIGHT_TO_LEFT; break;
+            case 2: showType = HideType.FROM_BOTTOM_TO_TOP; break;
+            case 3: showType = HideType.FROM_LEFT_TO_RIGHT; break;
         }
         return showType;
     }

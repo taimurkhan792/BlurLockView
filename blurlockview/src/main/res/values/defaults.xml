@@ -8,6 +8,8 @@
     <color name="default_big_button_sub_text_color">#ffffff</color>
     <integer name="default_big_button_sub_text_size">12</integer>
 
+    <integer name="default_title_text_size">17</integer>
+    <color name="default_title_text_color">#ffffff</color>
     <integer name="default_left_button_text_size">20</integer>
     <color name="default_left_button_text_color">#ffffff</color>
     <integer name="default_right_button_text_size">20</integer>
