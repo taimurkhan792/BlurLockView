@@ -12,6 +12,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -76,7 +77,13 @@ public class BlurView extends View {
                 blur();
 
                 canvas.save();
-                canvas.translate(mBlurredView.getX() - getX(), mBlurredView.getY() - getY());
+
+                // modify here to get the correct bitmap when the blurring view is in a parent
+                int[] mBlurredViewXY = new int[2];
+                mBlurredView.getLocationOnScreen(mBlurredViewXY);
+                int[] mBlurringViewXY = new int[2];
+                getLocationOnScreen(mBlurringViewXY);
+                canvas.translate(mBlurredViewXY[0] - mBlurringViewXY[0], mBlurredViewXY[1] - mBlurringViewXY[1]);
                 canvas.scale(mDownsampleFactor, mDownsampleFactor);
                 canvas.drawBitmap(mBlurredBitmap, 0, 0, null);
                 canvas.restore();

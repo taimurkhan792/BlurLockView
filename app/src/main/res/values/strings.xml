@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">BlurLockViewSample</string>
+    <string name="app_name">BlurLock</string>
+
+    <string name="password_type">Password Type</string>
+    <string name="password_number">Number password</string>
+    <string name="password_text">Text Password</string>
 </resources>

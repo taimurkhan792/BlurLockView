@@ -1,5 +1,7 @@
 package com.nightonke.blurlockview;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -8,8 +10,12 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.nightonke.blurlockview.Directions.ShowType;
+import com.nightonke.blurlockview.Eases.EaseType;
 
 import java.util.Stack;
 
@@ -36,6 +42,7 @@ public class BlurLockView extends FrameLayout
     private BlurView mBlurView;
     private TextView leftButton;
     private TextView rightButton;
+
 
     private OnLeftButtonClickListener onLeftButtonClickListener;
     private OnPasswordInputListener onPasswordInputListener;
@@ -179,6 +186,40 @@ public class BlurLockView extends FrameLayout
 
     public void setAutoQuit(boolean autoQuit) {
         this.autoQuit = autoQuit;
+    }
+
+    public void update() {
+        mBlurView.invalidate();
+    }
+
+    public void show(int duration, ShowType showType, EaseType easeType) {
+        ObjectAnimator animator = null;
+        if (showType.equals(ShowType.FROM_TOP_TO_BOTTOM)) {
+            animator = ObjectAnimator.ofFloat(this, "translationY",
+                    getTranslationY() - getHeight(),
+                    getTranslationY());
+        } else if (showType.equals(ShowType.FROM_RIGHT_TO_LEFT)) {
+            animator = ObjectAnimator.ofFloat(this, "translationX",
+                    getTranslationX() + getWidth(),
+                    getTranslationX());
+        } else if (showType.equals(ShowType.FROM_BOTTOM_TO_TOP)) {
+            animator = ObjectAnimator.ofFloat(this, "translationY",
+                    getTranslationY() + getHeight(),
+                    getTranslationY());
+        } else if (showType.equals(ShowType.FROM_LEFT_TO_RIGHT)) {
+            animator = ObjectAnimator.ofFloat(this, "translationX",
+                    getTranslationX() - getWidth(),
+                    getTranslationX());
+        }
+        animator.setDuration(duration);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                update();
+            }
+        });
+        animator.setInterpolator(InterpolatorFactory.getInterpolator(easeType));
+        animator.start();
     }
 
     public interface OnPasswordInputListener {
