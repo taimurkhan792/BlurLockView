@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.nightonke.blurlockview.BlurView
+        android:id="@+id/blurview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_above="@+id/layout_123"
+            >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Input Password"
+                android:textSize="20sp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="56dp"
+                />
+
+            <TextView
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Indicator here"
+                android:layout_marginBottom="30dp"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_123"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/layout_456"
+            >
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toStartOf="@+id/button_2"
+                android:layout_marginEnd="@dimen/button_margin"
+                />
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/button_margin"
+                />
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toEndOf="@id/button_2"
+                android:layout_marginStart="@dimen/button_margin"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_456"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            >
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toStartOf="@+id/button_5"
+                android:layout_marginEnd="@dimen/button_margin"
+                />
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_5"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/button_margin"
+                />
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_6"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toEndOf="@id/button_5"
+                android:layout_marginStart="@dimen/button_margin"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_789"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_456"
+            >
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_7"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toStartOf="@+id/button_8"
+                android:layout_marginEnd="@dimen/button_margin"
+                />
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_8"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/button_margin"
+                />
+
+            <com.nightonke.blurlockview.BigButtonView
+                android:id="@+id/button_9"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toEndOf="@id/button_8"
+                android:layout_marginStart="@dimen/button_margin"
+                />
+
+        </RelativeLayout>
+
+        <com.nightonke.blurlockview.BigButtonView
+            android:id="@+id/button_0"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/layout_789"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/left_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="紧急情况"
+        android:gravity="center"
+        android:layout_gravity="bottom|start"
+        />
+
+    <TextView
+        android:id="@+id/right_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="删除"
+        android:gravity="center"
+        android:layout_gravity="bottom|end"
+        />
+
+</FrameLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="default_big_button_width">80dp</dimen>
+    <dimen name="default_big_button_height">80dp</dimen>
+    <color name="default_big_button_text_color">#ffffff</color>
+    <integer name="default_big_button_text_size">35</integer>
+    <color name="default_big_button_sub_text_color">#ffffff</color>
+    <integer name="default_big_button_sub_text_size">12</integer>
+
+    <string-array
+        name="default_big_button_text">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+
+    <string-array
+        name="default_big_button_sub_text">
+        <item>0</item>
+        <item>1</item>
+        <item>ABC</item>
+        <item>DEF</item>
+        <item>GHI</item>
+        <item>JKL</item>
+        <item>MNO</item>
+        <item>PQRS</item>
+        <item>TUV</item>
+        <item>WXYZ</item>
+    </string-array>
+
+    <integer name="default_blur_radius">11</integer>
+    <integer name="default_downsample_factor">6</integer>
+    <color name="default_overlay_color">#99FFFFFF</color>
+
+</resources>
