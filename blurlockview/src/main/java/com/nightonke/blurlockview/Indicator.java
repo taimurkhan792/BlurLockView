@@ -39,16 +39,25 @@ public class Indicator extends LinearLayout {
         }
     }
 
+    /**
+     * Add a dot.
+     */
     public void add() {
         if (number == dots.length) return;
         dots[number++].setSelected(true);
     }
 
+    /**
+     * Delete a dot.
+     */
     public void delete() {
         if (number == 0) return;
         dots[--number].setSelected(false);
     }
 
+    /**
+     * Clear all dots.
+     */
     public void clear() {
         number = 0;
         for (int i = 0; i < dots.length; i++) dots[i].setSelected(false);

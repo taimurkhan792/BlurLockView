@@ -20,26 +20,24 @@ import android.widget.TextView;
  * Created by Weiping on 2016/3/16.
  */
 
-public class BigButtonView extends FrameLayout {
+public class SmallButtonView extends FrameLayout {
 
     private FrameLayout frameLayout;
     private View clickEffect;
     private TextView text;
-    private TextView subText;
     private String textString = "";
-    private String subTextString = "";
     private ObjectAnimator clickEffectAnimator;
     private int duration = 500;
     private OnPressListener onPressListener;
 
-    public BigButtonView(Context context) {
+    public SmallButtonView(Context context) {
         this(context, null);
     }
 
-    public BigButtonView(Context context, AttributeSet attrs) {
+    public SmallButtonView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        LayoutInflater.from(context).inflate(R.layout.big_button_view, this, true);
+        LayoutInflater.from(context).inflate(R.layout.small_button_view, this, true);
 
         Resources resources = getResources();
 
@@ -47,13 +45,8 @@ public class BigButtonView extends FrameLayout {
 
         text = (TextView)findViewById(R.id.text);
         text.setText(textString);
-        text.setTextColor(ContextCompat.getColor(context, R.color.default_big_button_text_color));
-        text.setTextSize(resources.getInteger(R.integer.default_big_button_text_size));
-
-        subText = (TextView)findViewById(R.id.sub_text);
-        subText.setText(subTextString);
-        subText.setTextColor(ContextCompat.getColor(context, R.color.default_big_button_sub_text_color));
-        subText.setTextSize(resources.getInteger(R.integer.default_big_button_sub_text_size));
+        text.setTextColor(ContextCompat.getColor(context, R.color.default_small_button_text_color));
+        text.setTextSize(resources.getInteger(R.integer.default_small_button_text_size));
 
         clickEffect = findViewById(R.id.click_effect);
         clickEffect.setAlpha(0);
@@ -79,6 +72,9 @@ public class BigButtonView extends FrameLayout {
         ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
         layoutParams.width = width;
         frameLayout.setLayoutParams(layoutParams);
+        layoutParams = clickEffect.getLayoutParams();
+        layoutParams.width = width;
+        clickEffect.setLayoutParams(layoutParams);
     }
 
     /**
@@ -90,6 +86,9 @@ public class BigButtonView extends FrameLayout {
         ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
         layoutParams.height = height;
         frameLayout.setLayoutParams(layoutParams);
+        layoutParams = clickEffect.getLayoutParams();
+        layoutParams.height = height;
+        clickEffect.setLayoutParams(layoutParams);
     }
 
     /**
@@ -129,15 +128,6 @@ public class BigButtonView extends FrameLayout {
     }
 
     /**
-     * Set the text size of the sub text.
-     *
-     * @param size Text size, in sp.
-     */
-    public void setSubTextSize(int size) {
-        subText.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
-    }
-
-    /**
      * Set the text color of main text.
      *
      * @param color Color.
@@ -147,22 +137,12 @@ public class BigButtonView extends FrameLayout {
     }
 
     /**
-     * Set the text color of sub text.
-     *
-     * @param color Color.
-     */
-    public void setSubTextColor(int color) {
-        subText.setTextColor(color);
-    }
-
-    /**
      * Set font of button.
      *
      * @param typeFace New font.
      */
     public void setTypeFace(Typeface typeFace) {
         text.setTypeface(typeFace);
-        subText.setTypeface(typeFace);
     }
 
     /**
@@ -173,38 +153,6 @@ public class BigButtonView extends FrameLayout {
     public void setText(String textString) {
         this.textString = textString;
         if (text != null) text.setText(textString);
-    }
-
-    /**
-     * Set the string of the sub text.
-     *
-     * @param subTextString The new string.
-     */
-    public void setSubText(String subTextString) {
-        this.subTextString = subTextString;
-        if (subText != null) subText.setText(subTextString);
-    }
-
-    /**
-     * Set the visibility of sub textview.
-     *
-     * @param visibility The visibility.
-     */
-    public void setSubTextVisibility(int visibility) {
-        if (visibility == GONE) {
-            text.setGravity(Gravity.CENTER);
-            text.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    10));
-        } else {
-            text.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-            text.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    7));
-        }
-        subText.setVisibility(visibility);
     }
 
     /**

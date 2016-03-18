@@ -4,15 +4,20 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.inputmethodservice.AbstractInputMethodService;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nightonke.blurlockview.Directions.HideType;
@@ -25,7 +30,16 @@ import java.util.Stack;
  * Created by Weiping on 2016/3/16.
  */
 public class BlurLockView extends FrameLayout
-        implements BigButtonView.OnPressListener {
+        implements
+        BigButtonView.OnPressListener,
+        SmallButtonView.OnPressListener {
+
+    private final char CHARS[][] = {
+            {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
+            {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
+            {   'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'  },
+            {        'Z', 'X', 'C', 'V', 'B', 'N', 'M'       }
+    };
 
     private Password type = Password.NUMBER;
 
@@ -36,12 +50,13 @@ public class BlurLockView extends FrameLayout
 
     private boolean animationIsPlaying = false;
 
-    private Stack<String> passwordStack = new Stack<>();
+    private Stack<String> passwordStack = null;
 
     private TextView title;
     private Indicator indicator;
 
     private BigButtonView[] bigButtonViews;
+    private SmallButtonView[][] smallButtonViews;
     private BlurView mBlurView;
     private TextView leftButton;
     private TextView rightButton;
@@ -56,33 +71,140 @@ public class BlurLockView extends FrameLayout
     public BlurLockView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        if (type.equals(Password.NUMBER)) {
-            // is number password
-            LayoutInflater.from(context).inflate(R.layout.number_blur_lock_view, this, true);
+        init();
+    }
 
-            bigButtonViews = new BigButtonView[10];
-            bigButtonViews[0] = (BigButtonView)findViewById(R.id.button_0);
-            bigButtonViews[1] = (BigButtonView)findViewById(R.id.button_1);
-            bigButtonViews[2] = (BigButtonView)findViewById(R.id.button_2);
-            bigButtonViews[3] = (BigButtonView)findViewById(R.id.button_3);
-            bigButtonViews[4] = (BigButtonView)findViewById(R.id.button_4);
-            bigButtonViews[5] = (BigButtonView)findViewById(R.id.button_5);
-            bigButtonViews[6] = (BigButtonView)findViewById(R.id.button_6);
-            bigButtonViews[7] = (BigButtonView)findViewById(R.id.button_7);
-            bigButtonViews[8] = (BigButtonView)findViewById(R.id.button_8);
-            bigButtonViews[9] = (BigButtonView)findViewById(R.id.button_9);
+    /**
+     * Init.
+     */
+    private void init() {
+        // number password
+        LayoutInflater.from(getContext()).inflate(R.layout.number_blur_lock_view, this, true);
 
-            String[] texts = getResources().getStringArray(R.array.default_big_button_text);
-            String[] subTexts = getResources().getStringArray(R.array.default_big_button_sub_text);
-            for (int i = 0; i < 10; i++) {
-                bigButtonViews[i].setOnPressListener(this);
-                bigButtonViews[i].setText(texts[i]);
-                bigButtonViews[i].setSubText(subTexts[i]);
-            }
+        bigButtonViews = new BigButtonView[10];
+        bigButtonViews[0] = (BigButtonView)findViewById(R.id.button_0);
+        bigButtonViews[1] = (BigButtonView)findViewById(R.id.button_1);
+        bigButtonViews[2] = (BigButtonView)findViewById(R.id.button_2);
+        bigButtonViews[3] = (BigButtonView)findViewById(R.id.button_3);
+        bigButtonViews[4] = (BigButtonView)findViewById(R.id.button_4);
+        bigButtonViews[5] = (BigButtonView)findViewById(R.id.button_5);
+        bigButtonViews[6] = (BigButtonView)findViewById(R.id.button_6);
+        bigButtonViews[7] = (BigButtonView)findViewById(R.id.button_7);
+        bigButtonViews[8] = (BigButtonView)findViewById(R.id.button_8);
+        bigButtonViews[9] = (BigButtonView)findViewById(R.id.button_9);
 
-            bigButtonViews[0].setSubTextVisibility(View.GONE);
-            bigButtonViews[1].setSubTextVisibility(View.INVISIBLE);
+        String[] texts = getResources().getStringArray(R.array.default_big_button_text);
+        String[] subTexts = getResources().getStringArray(R.array.default_big_button_sub_text);
+        for (int i = 0; i < 10; i++) {
+            bigButtonViews[i].setOnPressListener(this);
+            bigButtonViews[i].setText(texts[i]);
+            bigButtonViews[i].setSubText(subTexts[i]);
         }
+
+        bigButtonViews[0].setSubTextVisibility(View.GONE);
+        bigButtonViews[1].setSubTextVisibility(View.INVISIBLE);
+
+        // text password
+        smallButtonViews = new SmallButtonView[4][10];
+
+        // get screen width
+        Display display = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+        int buttonHorizontalMargin = 6;
+        int buttonVerticalMargin = 24;
+        int buttonWidth = (width - 11 * buttonHorizontalMargin) / 10;
+
+        // add buttons to lines
+        LinearLayout line1 = (LinearLayout)findViewById(R.id.line_1);
+        for (int i = 0; i < 10; i++) {
+            smallButtonViews[0][i] = new SmallButtonView(getContext());
+            smallButtonViews[0][i].setOnPressListener(this);
+            smallButtonViews[0][i].setText(CHARS[0][i] + "");
+            smallButtonViews[0][i].setWidth(buttonWidth);
+            smallButtonViews[0][i].setHeight(buttonWidth);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    buttonWidth,
+                    buttonWidth
+            );
+            if (i == 0)
+                params.setMargins(buttonHorizontalMargin, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            else if (i == 9)
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin, buttonVerticalMargin / 2);
+            else
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            line1.addView(smallButtonViews[0][i], params);
+        }
+
+        LinearLayout line2 = (LinearLayout)findViewById(R.id.line_2);
+        for (int i = 0; i < 10; i++) {
+            smallButtonViews[1][i] = new SmallButtonView(getContext());
+            smallButtonViews[1][i].setOnPressListener(this);
+            smallButtonViews[1][i].setText(CHARS[1][i] + "");
+            smallButtonViews[1][i].setWidth(buttonWidth);
+            smallButtonViews[1][i].setHeight(buttonWidth);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    buttonWidth,
+                    buttonWidth
+            );
+            if (i == 0)
+                params.setMargins(buttonHorizontalMargin, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            else if (i == 9)
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin, buttonVerticalMargin / 2);
+            else
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            line2.addView(smallButtonViews[1][i], params);
+        }
+
+        LinearLayout line3 = (LinearLayout)findViewById(R.id.line_3);
+        for (int i = 0; i < 9; i++) {
+            smallButtonViews[2][i] = new SmallButtonView(getContext());
+            smallButtonViews[2][i].setOnPressListener(this);
+            smallButtonViews[2][i].setText(CHARS[2][i] + "");
+            smallButtonViews[2][i].setWidth(buttonWidth);
+            smallButtonViews[2][i].setHeight(buttonWidth);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    buttonWidth,
+                    buttonWidth
+            );
+
+            if (i == 0)
+                params.setMargins(buttonHorizontalMargin, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            else if (i == 8)
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin, buttonVerticalMargin / 2);
+            else
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            line3.addView(smallButtonViews[2][i], params);
+        }
+
+        LinearLayout line4 = (LinearLayout)findViewById(R.id.line_4);
+        for (int i = 0; i < 7; i++) {
+            smallButtonViews[3][i] = new SmallButtonView(getContext());
+            smallButtonViews[3][i].setOnPressListener(this);
+            smallButtonViews[3][i].setText(CHARS[3][i] + "");
+            smallButtonViews[3][i].setWidth(buttonWidth);
+            smallButtonViews[3][i].setHeight(buttonWidth);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    buttonWidth,
+                    buttonWidth
+            );
+
+            if (i == 0)
+                params.setMargins(buttonHorizontalMargin, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            else if (i == 6)
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin, buttonVerticalMargin / 2);
+            else
+                params.setMargins(buttonHorizontalMargin / 2, buttonVerticalMargin / 2, buttonHorizontalMargin / 2, buttonVerticalMargin / 2);
+            line4.addView(smallButtonViews[3][i], params);
+        }
+
+        passwordStack = new Stack<>();
 
         mBlurView = (BlurView)findViewById(R.id.blurview);
         mBlurView.setOnClickListener(new OnClickListener() {
@@ -91,18 +213,18 @@ public class BlurLockView extends FrameLayout
 
             }
         });
-        
+
         Resources resources = getResources();
 
         indicator = (Indicator)findViewById(R.id.indicator);
         indicator.setPasswordLength(passwordLength);
 
         title = (TextView)findViewById(R.id.title);
-        title.setTextColor(ContextCompat.getColor(context, R.color.default_title_text_color));
+        title.setTextColor(ContextCompat.getColor(getContext(), R.color.default_title_text_color));
         title.setTextSize(resources.getInteger(R.integer.default_title_text_size));
-        
+
         leftButton = (TextView)findViewById(R.id.left_button);
-        leftButton.setTextColor(ContextCompat.getColor(context, R.color.default_left_button_text_color));
+        leftButton.setTextColor(ContextCompat.getColor(getContext(), R.color.default_left_button_text_color));
         leftButton.setTextSize(resources.getInteger(R.integer.default_left_button_text_size));
         leftButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -112,7 +234,7 @@ public class BlurLockView extends FrameLayout
         });
 
         rightButton = (TextView)findViewById(R.id.right_button);
-        rightButton.setTextColor(ContextCompat.getColor(context, R.color.default_right_button_text_color));
+        rightButton.setTextColor(ContextCompat.getColor(getContext(), R.color.default_right_button_text_color));
         rightButton.setTextSize(resources.getInteger(R.integer.default_right_button_text_size));
         rightButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -123,6 +245,100 @@ public class BlurLockView extends FrameLayout
                 }
             }
         });
+    }
+
+    /**
+     * Show the text keyboard smoothly or not.
+     *
+     * @param smoothly Smoothly or not.
+     */
+    private void showText(boolean smoothly) {
+        if (animationIsPlaying) return;
+        animationIsPlaying = true;
+        if (smoothly) {
+            ObjectAnimator.ofFloat(findViewById(R.id.layout_123), "alpha", 1f, 0f)
+                    .setDuration(500).start();
+            ObjectAnimator.ofFloat(findViewById(R.id.layout_456), "alpha", 1f, 0f)
+                    .setDuration(500).start();
+            ObjectAnimator.ofFloat(findViewById(R.id.layout_789), "alpha", 1f, 0f)
+                    .setDuration(500).start();
+            ObjectAnimator.ofFloat(findViewById(R.id.button_0), "alpha", 1f, 0f)
+                    .setDuration(500).start();
+            ObjectAnimator showAnimator =
+                    ObjectAnimator.ofFloat(findViewById(R.id.text_layout), "alpha", 0f, 1f);
+            showAnimator.setDuration(500).addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    findViewById(R.id.text_layout).setVisibility(VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    findViewById(R.id.layout_123).setVisibility(INVISIBLE);
+                    findViewById(R.id.layout_456).setVisibility(INVISIBLE);
+                    findViewById(R.id.layout_789).setVisibility(INVISIBLE);
+                    findViewById(R.id.button_0).setVisibility(INVISIBLE);
+                    animationIsPlaying = false;
+                }
+            });
+            showAnimator.start();
+        } else {
+            findViewById(R.id.layout_123).setVisibility(INVISIBLE);
+            findViewById(R.id.layout_456).setVisibility(INVISIBLE);
+            findViewById(R.id.layout_789).setVisibility(INVISIBLE);
+            findViewById(R.id.button_0).setVisibility(INVISIBLE);
+            findViewById(R.id.text_layout).setVisibility(VISIBLE);
+            animationIsPlaying = false;
+        }
+    }
+
+    /**
+     * Show the number keyboard smoothly or not.
+     *
+     * @param smoothly Smoothly or not.
+     */
+    private void showNumber(boolean smoothly) {
+        if (animationIsPlaying) return;
+        animationIsPlaying = true;
+        if (smoothly) {
+            ObjectAnimator.ofFloat(findViewById(R.id.layout_123), "alpha", 0f, 1f)
+                    .setDuration(500).start();
+            ObjectAnimator.ofFloat(findViewById(R.id.layout_456), "alpha", 0f, 1f)
+                    .setDuration(500).start();
+            ObjectAnimator.ofFloat(findViewById(R.id.layout_789), "alpha", 0f, 1f)
+                    .setDuration(500).start();
+            ObjectAnimator.ofFloat(findViewById(R.id.button_0), "alpha", 0f, 1f)
+                    .setDuration(500).start();
+            ObjectAnimator showAnimator =
+                    ObjectAnimator.ofFloat(findViewById(R.id.text_layout), "alpha", 1f, 0f);
+            showAnimator.setDuration(500).addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    findViewById(R.id.layout_123).setVisibility(VISIBLE);
+                    findViewById(R.id.layout_456).setVisibility(VISIBLE);
+                    findViewById(R.id.layout_789).setVisibility(VISIBLE);
+                    findViewById(R.id.button_0).setVisibility(VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    findViewById(R.id.text_layout).setVisibility(INVISIBLE);
+                    animationIsPlaying = false;
+                }
+            });
+            showAnimator.start();
+        } else {
+            findViewById(R.id.layout_123).setVisibility(VISIBLE);
+            findViewById(R.id.layout_456).setVisibility(VISIBLE);
+            findViewById(R.id.layout_789).setVisibility(VISIBLE);
+            findViewById(R.id.button_0).setVisibility(VISIBLE);
+            findViewById(R.id.text_layout).setVisibility(INVISIBLE);
+            animationIsPlaying = false;
+        }
     }
 
     /**
@@ -184,6 +400,7 @@ public class BlurLockView extends FrameLayout
                 if (onPasswordInputListener != null)
                     onPasswordInputListener.incorrect(nowPasswordString);
                 // perform the clear animation
+                incorrectInputTimes++;
                 indicator.clear();
                 passwordStack.clear();
             }
@@ -198,7 +415,18 @@ public class BlurLockView extends FrameLayout
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getPointerCount() > 1) return true;
+        if (event.getPointerCount() > 1) {
+            if (Password.NUMBER.equals(type)) {
+                for (int i = 0; i < bigButtonViews.length; i++) bigButtonViews[i].clearAnimation();
+            } else if (Password.TEXT.equals(type)) {
+                for (int i = 0; i < smallButtonViews.length; i++) {
+                    for (int j = 0; j < smallButtonViews[i].length; j++) {
+                        if (smallButtonViews[i][j] != null) smallButtonViews[i][j].clearAnimation();
+                    }
+                }
+            }
+            return true;
+        }
         return super.dispatchTouchEvent(event);
     }
 
@@ -248,12 +476,56 @@ public class BlurLockView extends FrameLayout
     }
 
     /**
+     * Get the password type.
+     *
+     * @return
+     */
+    public Password getType() {
+        return type;
+    }
+
+    /**
      * Set the password type.
      *
      * @param type Number or text.
      */
-    public void setType(Password type) {
+    public void setType(Password type, boolean smoothly) {
+        if (animationIsPlaying) return;
         this.type = type;
+        indicator.clear();
+        passwordStack.clear();
+        if (Password.NUMBER.equals(type)) {
+            showNumber(smoothly);
+        } else if (Password.TEXT.equals(type)) {
+            showText(smoothly);
+        }
+    }
+
+    /**
+     * Set the title text.
+     *
+     * @param string
+     */
+    public void setTitle(String string) {
+        title.setText(string);
+    }
+
+    /**
+     * Set the text of left button.
+     *
+     * @param string
+     */
+    public void setLeftButton(String string) {
+        leftButton.setText(string);
+    }
+
+    /**
+     * Set the text of right button.
+     *
+     * @param string
+     */
+    public void setRightButton(String string) {
+        rightButton.setText(string);
     }
 
     /**
@@ -399,5 +671,25 @@ public class BlurLockView extends FrameLayout
 
     public interface OnLeftButtonClickListener {
         void onClick();
+    }
+
+    public TextView getTitle() {
+        return title;
+    }
+
+    public TextView getLeftButton() {
+        return leftButton;
+    }
+
+    public TextView getRightButton() {
+        return rightButton;
+    }
+
+    public BigButtonView[] getBigButtonViews() {
+        return bigButtonViews;
+    }
+
+    public SmallButtonView[][] getSmallButtonViews() {
+        return smallButtonViews;
     }
 }

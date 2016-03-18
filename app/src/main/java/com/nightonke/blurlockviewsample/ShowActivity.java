@@ -12,6 +12,7 @@ import com.nightonke.blurlockview.BlurLockView;
 import com.nightonke.blurlockview.Directions.HideType;
 import com.nightonke.blurlockview.Directions.ShowType;
 import com.nightonke.blurlockview.Eases.EaseType;
+import com.nightonke.blurlockview.Password;
 
 public class ShowActivity extends AppCompatActivity
         implements
@@ -37,11 +38,20 @@ public class ShowActivity extends AppCompatActivity
         blurLockView = (BlurLockView)findViewById(R.id.blurlockview);
         blurLockView.setBlurredView(imageView);
         blurLockView.setCorrectPassword(getIntent().getStringExtra("PASSWORD"));
+        blurLockView.setType(getPasswordType(), false);
 
         blurLockView.setOnLeftButtonClickListener(this);
         blurLockView.setOnPasswordInputListener(this);
 
         imageView.setOnClickListener(this);
+    }
+
+    private Password getPasswordType() {
+        if ("PASSWORD_NUMBER".equals(getIntent().getStringExtra("PASSWORD_TYPE")))
+            return Password.NUMBER;
+        else if ("PASSWORD_NUMBER".equals(getIntent().getStringExtra("PASSWORD_TYPE")))
+            return Password.TEXT;
+        return Password.NUMBER;
     }
 
     @Override
@@ -81,10 +91,15 @@ public class ShowActivity extends AppCompatActivity
 
     @Override
     public void onClick() {
-        blurLockView.hide(
-                getIntent().getIntExtra("HIDE_DURATION", 1000),
-                getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
-                getEaseType(getIntent().getIntExtra("EASE_TYPE", 30)));
+        if (Password.NUMBER.equals(blurLockView.getType())) {
+            blurLockView.setType(Password.TEXT, true);
+        } else if (Password.TEXT.equals(blurLockView.getType())) {
+            blurLockView.setType(Password.NUMBER, true);
+        }
+//        blurLockView.hide(
+//                getIntent().getIntExtra("HIDE_DURATION", 1000),
+//                getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
+//                getEaseType(getIntent().getIntExtra("EASE_TYPE", 30)));
     }
     
     private ShowType getShowType(int p) {

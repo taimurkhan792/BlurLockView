@@ -35,7 +35,13 @@ public class Dot extends FrameLayout {
         clear();
     }
 
+    /**
+     * Set this dot to selected or not.
+     *
+     * @param isSelected Selected or not.
+     */
     public void setSelected(boolean isSelected) {
+        if (!(this.isSelected ^ isSelected)) return;
         this.isSelected = isSelected;
         if (isSelected) {
             // change to selected
@@ -68,6 +74,9 @@ public class Dot extends FrameLayout {
         }
     }
 
+    /**
+     * Clear the dot.
+     */
     public void clear() {
         selected.setAlpha(0);
         unselected.setAlpha(1);
