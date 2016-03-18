@@ -45,9 +45,12 @@ public class ShowActivity extends AppCompatActivity
 
         blurLockView = (BlurLockView)findViewById(R.id.blurlockview);
 
+        // Set the view that need to be blurred
         blurLockView.setBlurredView(imageView1);
 
+        // Set the password
         blurLockView.setCorrectPassword(getIntent().getStringExtra("PASSWORD"));
+
         blurLockView.setTitle(getIntent().getStringExtra("TITLE"));
         blurLockView.setLeftButton(getIntent().getStringExtra("LEFT_BUTTON"));
         blurLockView.setRightButton(getIntent().getStringExtra("RIGHT_BUTTON"));
