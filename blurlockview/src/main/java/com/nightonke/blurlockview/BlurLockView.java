@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.inputmethodservice.AbstractInputMethodService;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Display;
@@ -431,6 +430,69 @@ public class BlurLockView extends FrameLayout
     }
 
     /**
+     * Set big buttons' background.
+     *
+     * @param id
+     */
+    public void setBigButtonViewsBackground(int id) {
+        for (int i = 0; i < 10; i++) bigButtonViews[i].setBackground(id);
+    }
+
+    /**
+     * Set big buttons' click effect.
+     *
+     * @param id
+     */
+    public void setBigButtonViewsClickEffect(int id) {
+        for (int i = 0; i < 10; i++) bigButtonViews[i].setEffect(id);
+    }
+
+    /**
+     * Set the click effect duration.
+     *
+     * @param duration
+     */
+    public void setBigButtonViewsClickEffectDuration(int duration) {
+        for (int i = 0; i < 10; i++) bigButtonViews[i].setEffectDuration(duration);
+    }
+
+    /**
+     * Set small buttons' background.
+     *
+     * @param id
+     */
+    public void setSmallButtonViewsBackground(int id) {
+        for (int i = 0; i < smallButtonViews.length; i++)
+            for (int j = 0; j < smallButtonViews[i].length; j++)
+                if (smallButtonViews[i][j] != null)
+                    smallButtonViews[i][j].setBackground(id);
+    }
+
+    /**
+     * Set small buttons' click effect.
+     *
+     * @param id
+     */
+    public void setSmallButtonViewsClickEffect(int id) {
+        for (int i = 0; i < smallButtonViews.length; i++)
+            for (int j = 0; j < smallButtonViews[i].length; j++)
+                if (smallButtonViews[i][j] != null)
+                    smallButtonViews[i][j].setEffect(id);
+    }
+
+    /**
+     * Set the click effect duration.
+     *
+     * @param duration
+     */
+    public void setSmallButtonViewsClickEffectDuration(int duration) {
+        for (int i = 0; i < smallButtonViews.length; i++)
+            for (int j = 0; j < smallButtonViews[i].length; j++)
+                if (smallButtonViews[i][j] != null)
+                    smallButtonViews[i][j].setEffectDuration(duration);
+    }
+    
+    /**
      * Set all the fonts.
      *
      * @param typeface
@@ -439,6 +501,11 @@ public class BlurLockView extends FrameLayout
         this.typeface = typeface;
         if (type.equals(Password.NUMBER)) {
             for (int i = 0; i < 10; i++) bigButtonViews[i].setTypeFace(typeface);
+        } else if (type.equals(Password.TEXT)) {
+            for (int i = 0; i < smallButtonViews.length; i++)
+                for (int j = 0; j < smallButtonViews[i].length; j++)
+                    if (smallButtonViews[i][j] != null)
+                        smallButtonViews[i][j].setTypeFace(typeface);
         }
         title.setTypeface(typeface);
         leftButton.setTypeface(typeface);
@@ -456,6 +523,11 @@ public class BlurLockView extends FrameLayout
                 bigButtonViews[i].setTextColor(color);
                 bigButtonViews[i].setSubTextColor(color);
             }
+        } else if (type.equals(Password.TEXT)) {
+            for (int i = 0; i < smallButtonViews.length; i++)
+                for (int j = 0; j < smallButtonViews[i].length; j++)
+                    if (smallButtonViews[i][j] != null)
+                        smallButtonViews[i][j].setTextColor(color);
         }
         title.setTextColor(color);
         leftButton.setTextColor(color);
@@ -593,6 +665,10 @@ public class BlurLockView extends FrameLayout
             animator = ObjectAnimator.ofFloat(this, "translationX",
                     getTranslationX() - getWidth(),
                     getTranslationX());
+        } else if (showType.equals(ShowType.FADE_IN)) {
+            animator = ObjectAnimator.ofFloat(this, "alpha",
+                    0,
+                    1);
         }
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -641,6 +717,10 @@ public class BlurLockView extends FrameLayout
             animator = ObjectAnimator.ofFloat(this, "translationX",
                     getTranslationX(),
                     getTranslationX() + getWidth());
+        } else if (hideType.equals(HideType.FADE_OUT)) {
+            animator = ObjectAnimator.ofFloat(this, "alpha",
+                    1,
+                    0);
         }
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -656,6 +736,7 @@ public class BlurLockView extends FrameLayout
                 setVisibility(INVISIBLE);
                 setTranslationX(originalX);
                 setTranslationY(originalY);
+                setAlpha(1);
                 animationIsPlaying = false;
             }
         });
@@ -673,23 +754,93 @@ public class BlurLockView extends FrameLayout
         void onClick();
     }
 
+    /**
+     * Get the title.
+     * @return
+     */
     public TextView getTitle() {
         return title;
     }
 
+    /**
+     * Get the left button.
+     * @return
+     */
     public TextView getLeftButton() {
         return leftButton;
     }
 
+    /**
+     * Get the right button.
+     * @return
+     */
     public TextView getRightButton() {
         return rightButton;
     }
 
+    /**
+     * Get the numbers.
+     * @return
+     */
     public BigButtonView[] getBigButtonViews() {
         return bigButtonViews;
     }
 
+    /**
+     * Get the texts.
+     * @return
+     */
     public SmallButtonView[][] getSmallButtonViews() {
         return smallButtonViews;
+    }
+
+    /**
+     * Set the blur radius.
+     */
+    public void setBlurRadius(int blurRadius) {
+        mBlurView.setBlurRadius(blurRadius);
+        update();
+    }
+
+    /**
+     * Get the blur radius.
+     * @return
+     */
+    public int getBlurRadius() {
+        return mBlurView.getBlurRadius();
+    }
+
+    /**
+     * Set the downsample factor.
+     * @param downsampleFactor
+     */
+    public void setDownsampleFactor(int downsampleFactor) {
+        mBlurView.setDownsampleFactor(downsampleFactor);
+        update();
+    }
+
+    /**
+     * Get the downsample factor.
+     * @return
+     */
+    public int getDownsampleFactor() {
+        return mBlurView.getDownsampleFactor();
+    }
+
+    /**
+     * Set the overlay color.
+     * @param color
+     */
+    public void setOverlayColor(int color) {
+        mBlurView.setOverlayColor(color);
+        update();
+    }
+
+    /**
+     * Get the overlay color.
+     * @return
+     */
+    public int getOverlayColor() {
+        return mBlurView.getmOverlayColor();
     }
 }

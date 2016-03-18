@@ -67,7 +67,7 @@
                 android:id="@+id/show_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="8"
+                android:max="10"
                 android:progress="0"
                 />
 
@@ -92,7 +92,7 @@
                 android:id="@+id/hide_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="8"
+                android:max="10"
                 android:progress="0"
                 />
 
@@ -138,7 +138,7 @@
                 >
 
             </RadioGroup>
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,13 +149,56 @@
                 android:layout_marginTop="20dp"
                 />
 
-            <RadioGroup
-                android:id="@+id/group_ease_type"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
                 >
 
-            </RadioGroup>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="@string/show_ease_type"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="@string/hide_ease_type"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <RadioGroup
+                    android:id="@+id/show_ease_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <RadioGroup
+                    android:id="@+id/hide_ease_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -173,8 +216,98 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:hint="@string/password_hint"
-                android:text="1234"
+                android:text="@string/password_default"
                 />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/set_title"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:hint="@string/title_hint"
+                android:text="@string/title_default"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/set_left_button_text"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/left_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:hint="@string/left_button_text_hint"
+                android:text="@string/left_button_text_default"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/set_right_button_text"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/right_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:hint="@string/right_button_text_hint"
+                android:text="@string/right_button_text_default"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/set_typeface"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <RadioGroup
+                android:id="@+id/group_typeface"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <RadioButton
+                    android:id="@+id/san"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/san_francisco_regular"
+                    android:checked="true"
+                    />
+
+                <RadioButton
+                    android:id="@+id/default_typeface"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_typeface"
+                    />
+
+            </RadioGroup>
 
         </LinearLayout>
 
@@ -184,7 +317,6 @@
         android:id="@+id/go"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:src="@drawable/ok"
         android:scaleType="center"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="20dp"

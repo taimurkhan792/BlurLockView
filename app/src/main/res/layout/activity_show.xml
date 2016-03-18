@@ -7,11 +7,11 @@
     android:clickable="true">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/image_1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/test_background"
-        />
+        android:src="@drawable/image_1"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:layout_width="match_parent"

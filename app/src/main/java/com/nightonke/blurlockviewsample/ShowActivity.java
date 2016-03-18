@@ -1,13 +1,20 @@
 package com.nightonke.blurlockviewsample;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.nightonke.blurlockview.BlurLockView;
 import com.nightonke.blurlockview.Directions.HideType;
 import com.nightonke.blurlockview.Directions.ShowType;
@@ -18,10 +25,11 @@ public class ShowActivity extends AppCompatActivity
         implements
         View.OnClickListener,
         BlurLockView.OnPasswordInputListener,
-        BlurLockView.OnLeftButtonClickListener {
+        BlurLockView.OnLeftButtonClickListener,
+        ColorChooserDialog.ColorCallback {
 
     private BlurLockView blurLockView;
-    private ImageView imageView;
+    private ImageView imageView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +41,23 @@ public class ShowActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_show);
 
-        imageView = (ImageView)findViewById(R.id.image);
+        imageView1 = (ImageView)findViewById(R.id.image_1);
 
         blurLockView = (BlurLockView)findViewById(R.id.blurlockview);
-        blurLockView.setBlurredView(imageView);
+
+        blurLockView.setBlurredView(imageView1);
+
         blurLockView.setCorrectPassword(getIntent().getStringExtra("PASSWORD"));
+        blurLockView.setTitle(getIntent().getStringExtra("TITLE"));
+        blurLockView.setLeftButton(getIntent().getStringExtra("LEFT_BUTTON"));
+        blurLockView.setRightButton(getIntent().getStringExtra("RIGHT_BUTTON"));
+        blurLockView.setTypeface(getTypeface());
         blurLockView.setType(getPasswordType(), false);
 
         blurLockView.setOnLeftButtonClickListener(this);
         blurLockView.setOnPasswordInputListener(this);
 
-        imageView.setOnClickListener(this);
+        imageView1.setOnClickListener(this);
     }
 
     private Password getPasswordType() {
@@ -54,6 +68,14 @@ public class ShowActivity extends AppCompatActivity
         return Password.NUMBER;
     }
 
+    private Typeface getTypeface() {
+        if ("SAN".equals(getIntent().getStringExtra("TYPEFACE")))
+            return Typeface.createFromAsset(getAssets(),"fonts/San Francisco Regular.ttf");
+        else if ("DEFAULT".equals(getIntent().getStringExtra("TYPEFACE")))
+            return Typeface.DEFAULT;
+        return Typeface.DEFAULT;
+    }
+
     @Override
     public void correct(String inputPassword) {
         Toast.makeText(this,
@@ -62,7 +84,7 @@ public class ShowActivity extends AppCompatActivity
         blurLockView.hide(
                 getIntent().getIntExtra("HIDE_DURATION", 1000),
                 getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
-                getEaseType(getIntent().getIntExtra("EASE_TYPE", 30)));
+                getEaseType(getIntent().getIntExtra("HIDE_EASE_TYPE", 30)));
     }
 
     @Override
@@ -80,28 +102,140 @@ public class ShowActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.image:
+            case R.id.image_1:
                 blurLockView.show(
                         getIntent().getIntExtra("SHOW_DURATION", 1000),
                         getShowType(getIntent().getIntExtra("SHOW_DIRECTION", 0)),
-                        getEaseType(getIntent().getIntExtra("EASE_TYPE", 30)));
+                        getEaseType(getIntent().getIntExtra("SHOW_EASE_TYPE", 30)));
                 break;
         }
     }
 
     @Override
     public void onClick() {
-        if (Password.NUMBER.equals(blurLockView.getType())) {
-            blurLockView.setType(Password.TEXT, true);
-        } else if (Password.TEXT.equals(blurLockView.getType())) {
-            blurLockView.setType(Password.NUMBER, true);
-        }
-//        blurLockView.hide(
-//                getIntent().getIntExtra("HIDE_DURATION", 1000),
-//                getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
-//                getEaseType(getIntent().getIntExtra("EASE_TYPE", 30)));
+        new MaterialDialog.Builder(this)
+                .title(R.string.operations)
+                .items(R.array.operations)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        switch (which) {
+                            case 0:
+                                blurLockView.show(
+                                        getIntent().getIntExtra("SHOW_DURATION", 1000),
+                                        getShowType(getIntent().getIntExtra("SHOW_DIRECTION", 0)),
+                                        getEaseType(getIntent().getIntExtra("SHOW_EASE_TYPE", 30)));
+                                break;
+                            case 1:
+                                blurLockView.hide(
+                                        getIntent().getIntExtra("HIDE_DURATION", 1000),
+                                        getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
+                                        getEaseType(getIntent().getIntExtra("HIDE_EASE_TYPE", 30)));
+                                break;
+                            case 2:
+                                setBlurRadius();
+                                break;
+                            case 3:
+                                setDownsamepleFactor();
+                                break;
+                            case 4:
+                                setOverlayColor();
+                                break;
+                            case 5:
+                                if (Password.NUMBER.equals(blurLockView.getType())) {
+                                    blurLockView.setType(Password.TEXT, true);
+                                } else if (Password.TEXT.equals(blurLockView.getType())) {
+                                    blurLockView.setType(Password.NUMBER, true);
+                                }
+                                break;
+
+                        }
+                        return true;
+                    }
+                })
+                .show();
     }
-    
+
+    private int radius;
+    private void setBlurRadius() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.set_blur_radius_title)
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .positiveText(R.string.ok)
+                .alwaysCallInputCallback()
+                .input(
+                        "[1, 20]",
+                        blurLockView.getBlurRadius() + "",
+                        new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        radius = -1;
+                        try {
+                            radius = Integer.parseInt(String.valueOf(input));
+                        } catch (NumberFormatException n) {
+                            radius = -1;
+                        }
+                        if (!(1 <= radius && radius <= 20))
+                            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                        else
+                            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                    }
+                })
+                .onAny(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (which == DialogAction.POSITIVE) {
+                            blurLockView.setBlurRadius(radius);
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private int downsamepleFactor;
+    private void setDownsamepleFactor() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.set_downsample_factor_title)
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .positiveText(R.string.ok)
+                .alwaysCallInputCallback()
+                .input(
+                        "[1, 20]",
+                        blurLockView.getDownsampleFactor() + "",
+                        new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                downsamepleFactor = -1;
+                                try {
+                                    downsamepleFactor = Integer.parseInt(String.valueOf(input));
+                                } catch (NumberFormatException n) {
+                                    downsamepleFactor = -1;
+                                }
+                                if (!(1 <= downsamepleFactor && downsamepleFactor <= 20))
+                                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                                else
+                                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                            }
+                        })
+                .onAny(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (which == DialogAction.POSITIVE) {
+                            blurLockView.setDownsampleFactor(downsamepleFactor);
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private void setOverlayColor() {
+        new ColorChooserDialog.Builder(this, R.string.set_overlay_color)
+                .titleSub(R.string.set_overlay_color)
+                .doneButton(R.string.ok)
+                .preselect(blurLockView.getOverlayColor())
+                .show();
+    }
+
     private ShowType getShowType(int p) {
         ShowType showType = ShowType.FROM_TOP_TO_BOTTOM;
         switch (p) {
@@ -109,19 +243,21 @@ public class ShowActivity extends AppCompatActivity
             case 1: showType = ShowType.FROM_RIGHT_TO_LEFT; break;
             case 2: showType = ShowType.FROM_BOTTOM_TO_TOP; break;
             case 3: showType = ShowType.FROM_LEFT_TO_RIGHT; break;
+            case 4: showType = ShowType.FADE_IN; break;
         }
         return showType;
     }
 
     private HideType getHideType(int p) {
-        HideType showType = HideType.FROM_TOP_TO_BOTTOM;
+        HideType hideType = HideType.FROM_TOP_TO_BOTTOM;
         switch (p) {
-            case 0: showType = HideType.FROM_TOP_TO_BOTTOM; break;
-            case 1: showType = HideType.FROM_RIGHT_TO_LEFT; break;
-            case 2: showType = HideType.FROM_BOTTOM_TO_TOP; break;
-            case 3: showType = HideType.FROM_LEFT_TO_RIGHT; break;
+            case 0: hideType = HideType.FROM_TOP_TO_BOTTOM; break;
+            case 1: hideType = HideType.FROM_RIGHT_TO_LEFT; break;
+            case 2: hideType = HideType.FROM_BOTTOM_TO_TOP; break;
+            case 3: hideType = HideType.FROM_LEFT_TO_RIGHT; break;
+            case 4: hideType = HideType.FADE_OUT; break;
         }
-        return showType;
+        return hideType;
     }
 
     private EaseType getEaseType(int p) {
@@ -160,5 +296,10 @@ public class ShowActivity extends AppCompatActivity
             case 30: easeType = EaseType.Linear; break;
         }
         return easeType;
+    }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        blurLockView.setOverlayColor(selectedColor);
     }
 }

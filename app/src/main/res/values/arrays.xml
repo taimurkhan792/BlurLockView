@@ -2,12 +2,25 @@
 <resources>
 
     <string-array
+        name="operations">
+
+        <item>Show Blur View</item>
+        <item>Hide Blur View</item>
+        <item>Set Blur Radius</item>
+        <item>Set Downsample Factor</item>
+        <item>Set Overlay Color</item>
+        <item>Change Password Type</item>
+
+    </string-array>
+
+    <string-array
         name="show_direction">
 
         <item>From top to bottom</item>
         <item>From right to left</item>
         <item>From bottom to top</item>
         <item>From left to right</item>
+        <item>Fade In</item>
 
     </string-array>
 
@@ -18,6 +31,7 @@
         <item>From right to left</item>
         <item>From bottom to top</item>
         <item>From left to right</item>
+        <item>Fade Out</item>
 
     </string-array>
 

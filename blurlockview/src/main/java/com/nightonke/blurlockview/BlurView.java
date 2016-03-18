@@ -12,7 +12,6 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -20,6 +19,7 @@ import android.view.View;
  */
 public class BlurView extends View {
 
+    private int mBlurRadius;
     private int mDownsampleFactor;
     private int mOverlayColor;
 
@@ -73,16 +73,17 @@ public class BlurView extends View {
                     mBitmapToBlur.eraseColor(Color.TRANSPARENT);
                 }
 
+                int[] mBlurredViewXY = new int[2];
+                mBlurredView.getLocationOnScreen(mBlurredViewXY);
+                int[] mBlurringViewXY = new int[2];
+                getLocationOnScreen(mBlurringViewXY);
+
                 mBlurredView.draw(mBlurringCanvas);
                 blur();
 
                 canvas.save();
 
                 // modify here to get the correct bitmap when the blurring view is in a parent
-                int[] mBlurredViewXY = new int[2];
-                mBlurredView.getLocationOnScreen(mBlurredViewXY);
-                int[] mBlurringViewXY = new int[2];
-                getLocationOnScreen(mBlurringViewXY);
                 canvas.translate(mBlurredViewXY[0] - mBlurringViewXY[0], mBlurredViewXY[1] - mBlurringViewXY[1]);
                 canvas.scale(mDownsampleFactor, mDownsampleFactor);
                 canvas.drawBitmap(mBlurredBitmap, 0, 0, null);
@@ -93,7 +94,12 @@ public class BlurView extends View {
     }
 
     public void setBlurRadius(int radius) {
-        mBlurScript.setRadius(radius);
+        mBlurRadius = radius;
+        mBlurScript.setRadius(mBlurRadius);
+    }
+
+    public int getBlurRadius() {
+        return mBlurRadius;
     }
 
     public void setDownsampleFactor(int factor) {
@@ -107,8 +113,16 @@ public class BlurView extends View {
         }
     }
 
+    public int getDownsampleFactor() {
+        return mDownsampleFactor;
+    }
+
     public void setOverlayColor(int color) {
         mOverlayColor = color;
+    }
+
+    public int getmOverlayColor() {
+        return mOverlayColor;
     }
 
     private void initializeRenderScript(Context context) {

@@ -1,9 +1,13 @@
 package com.nightonke.blurlockviewsample;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -20,10 +24,11 @@ public class SettingsActivity extends AppCompatActivity {
     private SeekBar hideDuration;
     private TextView hideDurationTextView;
 
-    private RadioButton[] showDirections = new RadioButton[4];
-    private RadioButton[] hideDirections = new RadioButton[4];
-    
-    private RadioButton[] easeTypes = new RadioButton[31];
+    private RadioButton[] showDirections = new RadioButton[5];
+    private RadioButton[] hideDirections = new RadioButton[5];
+
+    private RadioButton[] showEaseTypes = new RadioButton[31];
+    private RadioButton[] hideEaseTypes = new RadioButton[31];
 
     private FloatingActionButton go;
 
@@ -34,11 +39,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         showDuration = (SeekBar)findViewById(R.id.show_duration);
         showDurationTextView = (TextView)findViewById(R.id.show_duration_text);
-        showDurationTextView.setText((showDuration.getProgress() * 500 + 1000) + "ms");
+        showDurationTextView.setText((showDuration.getProgress() * 500) + "ms");
         showDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                showDurationTextView.setText((progress * 500 + 1000) + "ms");
+                showDurationTextView.setText((progress * 500) + "ms");
             }
 
             @Override
@@ -54,11 +59,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         hideDuration = (SeekBar)findViewById(R.id.hide_duration);
         hideDurationTextView = (TextView)findViewById(R.id.hide_duration_text);
-        hideDurationTextView.setText((hideDuration.getProgress() * 500 + 1000) + "ms");
+        hideDurationTextView.setText((hideDuration.getProgress() * 500) + "ms");
         hideDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                hideDurationTextView.setText((progress * 500 + 1000) + "ms");
+                hideDurationTextView.setText((progress * 500) + "ms");
             }
 
             @Override
@@ -73,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         String[] showDirectionsArray = getResources().getStringArray(R.array.show_direction);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             showDirections[i] = new RadioButton(this);
             showDirections[i].setText(showDirectionsArray[i]);
             showDirections[i].setLayoutParams(new ViewGroup.LayoutParams(
@@ -84,7 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
         showDirections[0].setChecked(true);
 
         String[] hideDirectionsArray = getResources().getStringArray(R.array.hide_direction);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             hideDirections[i] = new RadioButton(this);
             hideDirections[i].setText(hideDirectionsArray[i]);
             hideDirections[i].setLayoutParams(new ViewGroup.LayoutParams(
@@ -94,16 +99,27 @@ public class SettingsActivity extends AppCompatActivity {
         }
         hideDirections[0].setChecked(true);
 
-        String[] easeTypesArray = getResources().getStringArray(R.array.ease_type);
+        String[] showEaseTypesArray = getResources().getStringArray(R.array.ease_type);
         for (int i = 0; i < 31; i++) {
-            easeTypes[i] = new RadioButton(this);
-            easeTypes[i].setText(easeTypesArray[i]);
-            easeTypes[i].setLayoutParams(new ViewGroup.LayoutParams(
+            showEaseTypes[i] = new RadioButton(this);
+            showEaseTypes[i].setText(showEaseTypesArray[i]);
+            showEaseTypes[i].setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-            ((ViewGroup) findViewById(R.id.group_ease_type)).addView(easeTypes[i]);
+            ((ViewGroup) findViewById(R.id.show_ease_type)).addView(showEaseTypes[i]);
         }
-        easeTypes[30].setChecked(true);
+        showEaseTypes[30].setChecked(true);
+
+        String[] hideEaseTypesArray = getResources().getStringArray(R.array.ease_type);
+        for (int i = 0; i < 31; i++) {
+            hideEaseTypes[i] = new RadioButton(this);
+            hideEaseTypes[i].setText(hideEaseTypesArray[i]);
+            hideEaseTypes[i].setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            ((ViewGroup) findViewById(R.id.hide_ease_type)).addView(hideEaseTypes[i]);
+        }
+        hideEaseTypes[30].setChecked(true);
 
         go = (FloatingActionButton)findViewById(R.id.go);
         go.setOnClickListener(new View.OnClickListener() {
@@ -124,13 +140,21 @@ public class SettingsActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SettingsActivity.this, ShowActivity.class);
                 intent.putExtra("PASSWORD_TYPE", getPasswordType());
-                intent.putExtra("SHOW_DURATION", showDuration.getProgress() * 500 + 1000);
-                intent.putExtra("HIDE_DURATION", hideDuration.getProgress() * 500 + 1000);
+                intent.putExtra("SHOW_DURATION", showDuration.getProgress() * 500);
+                intent.putExtra("HIDE_DURATION", hideDuration.getProgress() * 500);
                 intent.putExtra("SHOW_DIRECTION", getShowDirection());
                 intent.putExtra("HIDE_DIRECTION", getHideDirection());
-                intent.putExtra("EASE_TYPE", getEaseType());
+                intent.putExtra("SHOW_EASE_TYPE", getShowEaseType());
+                intent.putExtra("HIDE_EASE_TYPE", getHideEaseType());
                 intent.putExtra("PASSWORD",
                         ((EditText)findViewById(R.id.password)).getText().toString());
+                intent.putExtra("TITLE",
+                        ((EditText)findViewById(R.id.title)).getText().toString());
+                intent.putExtra("LEFT_BUTTON",
+                        ((EditText)findViewById(R.id.left_button)).getText().toString());
+                intent.putExtra("RIGHT_BUTTON",
+                        ((EditText)findViewById(R.id.right_button)).getText().toString());
+                intent.putExtra("TYPEFACE", getTypeface());
                 startActivity(intent);
             }
         });
@@ -144,18 +168,56 @@ public class SettingsActivity extends AppCompatActivity {
         return "";
     }
 
+    private String getTypeface() {
+        switch (((RadioGroup)findViewById(R.id.group_typeface)).getCheckedRadioButtonId()) {
+            case R.id.san: return "SAN";
+            case R.id.default_typeface: return "DEFAULT";
+        }
+        return "";
+    }
+
     private int getShowDirection() {
-        for (int i = 0; i < 4; i++) if (showDirections[i].isChecked()) return i;
+        for (int i = 0; i < showDirections.length; i++)
+            if (showDirections[i].isChecked()) return i;
         return 0;
     }
 
     private int getHideDirection() {
-        for (int i = 0; i < 4; i++) if (hideDirections[i].isChecked()) return i;
+        for (int i = 0; i < hideDirections.length; i++)
+            if (hideDirections[i].isChecked()) return i;
         return 0;
     }
 
-    private int getEaseType() {
-        for (int i = 0; i < 31; i++) if (easeTypes[i].isChecked()) return i;
+    private int getShowEaseType() {
+        for (int i = 0; i < 31; i++) if (showEaseTypes[i].isChecked()) return i;
         return 0;
+    }
+
+    private int getHideEaseType() {
+        for (int i = 0; i < 31; i++) if (hideEaseTypes[i].isChecked()) return i;
+        return 0;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_github:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+                        "https://github.com/Nightonke/BlurLockView")));
+                return true;
+            case R.id.action_developer:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+                        "https://github.com/Nightonke")));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

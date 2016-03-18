@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -193,16 +192,8 @@ public class BigButtonView extends FrameLayout {
     public void setSubTextVisibility(int visibility) {
         if (visibility == GONE) {
             text.setGravity(Gravity.CENTER);
-            text.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    10));
         } else {
             text.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-            text.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    7));
         }
         subText.setVisibility(visibility);
     }

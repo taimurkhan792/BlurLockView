@@ -11,17 +11,50 @@
     <string name="show_direction">Show Direction</string>
     <string name="hide_direction">hide Direction</string>
 
-    <string name="ease_type">Show Ease Type</string>
+    <string name="ease_type">Ease Type</string>
+    <string name="show_ease_type">Show Ease Type</string>
+    <string name="hide_ease_type">Hide Ease Type</string>
 
     <string name="set_password">Set Password</string>
     <string name="password_hint">Write your password here</string>
     <string name="password_is_empty">Please input the password</string>
     <string name="password_too_long">Password too long</string>
+    <string name="password_default">1234</string>
+
+    <string name="set_title">Set Title</string>
+    <string name="title_hint">Write your title here</string>
+    <string name="title_is_empty">Please input the title</string>
+    <string name="title_too_long">Title too long</string>
+    <string name="title_default">Blur Lock</string>
+
+    <string name="set_left_button_text">Set Left Button</string>
+    <string name="left_button_text_hint">Write your text of left button here</string>
+    <string name="left_button_text_is_empty">Please input the text of left button</string>
+    <string name="left_button_text_too_long">Text of left button too long</string>
+    <string name="left_button_text_default">Operations</string>
+
+    <string name="set_right_button_text">Set Right Button</string>
+    <string name="right_button_text_hint">Backspace is suggested</string>
+    <string name="right_button_text_is_empty">Please input the text of right button</string>
+    <string name="right_button_text_too_long">Text of right button too long</string>
+    <string name="right_button_text_default">Backspace</string>
+
+    <string name="set_typeface">Set Typeface</string>
+    <string name="san_francisco_regular">San Francisco Regular</string>
+    <string name="default_typeface">Default</string>
 
     <string name="click_to_show">Click to show BlurLockView</string>
 
     <string name="password_correct">Password correct</string>
     <string name="password_incorrect">Password incorrect</string>
+
+    <string name="operations">Operations</string>
+
+    <string name="set_blur_radius_title">Set Blur Radius</string>
+    <string name="set_downsample_factor_title">Set Downsample Factor</string>
+    <string name="set_overlay_color">Set Overlay Color</string>
+
+    <string name="ok">OK</string>
 
 
 
