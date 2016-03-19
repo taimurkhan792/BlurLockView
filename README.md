@@ -4,6 +4,8 @@
 
 Lock view with blur effect. Easy to customise.
 
+# [中文文档](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md)
+
 # Note
 
 1. The blur effect comes from [500px-android-blur](https://github.com/500px/500px-android-blur).
