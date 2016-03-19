@@ -7,10 +7,10 @@
 # 备注
 
 1. 使用了[500px-android-blur](https://github.com/500px/500px-android-blur)的毛玻璃效果。
-2. More animations for showing or hiding the BlurLockView will be added.
-3. In the demo, I use [Material-Dialogs](https://github.com/afollestad/material-dialogs) for convenient.
+2. 会添加更多显示、隐藏BlurLockView的动画。
+3. 在demo里，使用了[Material-Dialogs](https://github.com/afollestad/material-dialogs)以便调整颜色。
 
-# Usage
+# 使用
 
 [Demo](https://github.com/Nightonke/BlurLockView#demo)  
 [Gradle](https://github.com/Nightonke/BlurLockView#gradle)  
@@ -26,17 +26,17 @@
 
 ### Demo
 
-Try demo here:  
+下载demo：  
 [Download from Fir](http://fir.im/yakc)  
 [Download from Github](https://github.com/Nightonke/BlurLockView/blob/master/Apk/BlurLock-V1.0.0.apk?raw=true)  
 ![Fir](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/fir.png)  
-You can get all about BlurLockView from the demo.  
+Demo中含有目前BlurLockView的所有功能  
 ![Settings](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/test.png)
 ![Operations](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/operations.png)
 
 ### Gradle
 
-Add this to build.gradle:  
+添加到module的build.gradle中  
 ```java
 dependencies {
     ...
@@ -45,9 +45,9 @@ dependencies {
 }
 ```
 
-### Easy to Use
+### 快速使用
 
-Add the xml code:  
+加入到xml中：  
 ```xml
 <com.nightonke.blurlockview.BlurLockView
     android:id="@+id/blurlockview"
@@ -55,9 +55,9 @@ Add the xml code:
     android:layout_height="match_parent"
     />
 ```
-Notice that you should set the BlurLockView to cover the view than need to be blured.
+注意BlurLockView应该放置在需要被覆盖的控件的正上方，也就是覆盖其他控件。
 
-Add this to initialize the BlurLockView:  
+加入以下代码即可使用：  
 ```java
 // Set the view that need to be blurred
 blurLockView.setBlurredView(imageView1);
@@ -66,11 +66,11 @@ blurLockView.setBlurredView(imageView1);
 blurLockView.setCorrectPassword(getIntent().getStringExtra("PASSWORD"));
 ```
 
-### Show and Hide
+### 显示和隐藏
 
-You can choose duration, direction and ease type to show or hide the BlurLockView. 
-For instance, the gif at the start of readme shows as ```ShowType.FADE_IN``` with 1000ms and ```HideType.FADE_OUT``` with 1000ms. 
-You can check all the directions and ease types in the demo above.  
+你可以选择显示或隐藏的时延、方式、缓动函数。
+比如，本文开头的gif以```ShowType.FADE_IN```为方式，以1000ms为时延来显示，以```HideType.FADE_OUT```为方式，以1000ms为时延来隐藏。 
+你可以在demo中尝试各种效果。  
 
 ![Ease](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/ease.gif)  
 
@@ -102,51 +102,51 @@ public void onClick() {
     // The left button is being clicked
 }
 ```
-Implements the listeners above and then:  
+实现以上Listeners然后加入以下代码：    
 ```java
 blurLockView.setOnLeftButtonClickListener(this);
 blurLockView.setOnPasswordInputListener(this);
 ```
-Notice that the right button is set as "Backspace" usually, so there is not OnRightButtonClickListener.  
+注意右下角的按钮是用于退格的，所以没有右下角按钮的监听器。    
 
-### Blur Effect
+### 毛玻璃效果
 
-You can set the effect of blur with 3 parameters.  
-1. **DownsampleFactor**, with ```setDownsampleFactor(int downsampleFactor)```, the smaller, the clearer.  
-2. **BlurRadius**, with ```setBlurRadius(int blurRadius)```, the smaller, the clearer.  
-3. **OverlayColor**, with ```setOverlayColor(int color)```, to change the overlay color of BlurLockView.
+你可以使用三种不同的参数来调整毛玻璃效果：    
+1. 用```setDownsampleFactor(int downsampleFactor)```来调整**DownsampleFactor**，其值越小，毛玻璃效果越淡。  
+2. 用```setBlurRadius(int blurRadius)```来调整**BlurRadius**，其值越小，毛玻璃效果越淡。  
+3. 用```setOverlayColor(int color)```来调整**OverlayColor**，可以改变毛玻璃效果颜色。
 
-Examples:  
+例子：    
 ![clear](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/clear.png)
 ![unclear](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/unclear.png)
 
 ![red](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/red.png)
 ![blue](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/blue.png)
 
-### Keyboard
+### 键盘
 
-You can use different keyboard to get different password.  
+你可以用不同的键盘来输入不同类型的密码。    
 ```java
 setType(Password type, boolean smoothly);
 ```
-Choose ```Password.NUMBER```(default) or ```Password.TEXT``` and whether change password type smoothly. 
-Notice that the password with text is case-insensitive(I will improve this).  
+密码类型有```Password.NUMBER```（默认）和```Password.TEXT```，还可以选择是否顺畅切换键盘。
+注意字母类型密码是不区分大小写的，我会改进这个不足。  
 
 ![Password Type](https://github.com/Nightonke/BlurLockView/blob/master/Pictures/keyboard.gif)
 
-### Text
+### 文本
 
-1. Set the text of title with ```setTitle(String string)```.
-2. Set the text of left button with ```setLeftButton(String string)```.
-3. Set the text of right button with ```setRightButton(String string)```.
+1. 用```setTitle(String string)```来改变标题文本。
+2. 用```setLeftButton(String string)```来改变左下角按钮文本。
+3. 用```setRightButton(String string)```来改变右下角按钮文本。
 
-### Font
+### 字体
 
-You can set all the font of text with ```setTypeface(Typeface typeface)```.
+用```setTypeface(Typeface typeface)```来改变BlurLockView的字体。
 
-### Style
+### 风格
 
-**1.** Set the background of buttons in Password.TEXT with ```setSmallButtonViewsBackground(int id)```. The default resource drawable is:  
+**1.** 改变字母类型密码的按钮背景，可以用```setSmallButtonViewsBackground(int id)```，默认的背景是：    
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
@@ -170,7 +170,7 @@ You can set all the font of text with ```setTypeface(Typeface typeface)```.
 </selector>
 ```
 
-**2.** Set the click effect of buttons in Password.TEXT with ```setBigButtonViewsClickEffect(int id)```. The default resource drawable is:  
+**2.** 改变字母类型密码的按钮效果，可以用```setBigButtonViewsClickEffect(int id)```，默认的效果是：    
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
@@ -181,18 +181,18 @@ You can set all the font of text with ```setTypeface(Typeface typeface)```.
     </item>
 </selector>
 ```
-**3.** When you click the buttoms in Password.TEXT, the effect above will disappear and you can set the duration by ```setSmallButtonViewsClickEffectDuration(int duration)```.
+**3.** 当点击按钮时，上述提到的按钮效果会渐逝，可以用```setSmallButtonViewsClickEffectDuration(int duration)```来调整时延。
 
-**4.** Similarly, you can set the 3 styles of buttons in Password.NUMBER like above with ```setBigButtonViewsBackground(int id)```, ```setBigButtonViewsClickEffect(int id)``` and ```setBigButtonViewsClickEffectDuration(int duration)```.
+**4.** 类似的，可以用这三个函数来改变数字类型密码的风格```setBigButtonViewsBackground(int id)```，```setBigButtonViewsClickEffect(int id)```和```setBigButtonViewsClickEffectDuration(int duration)```。
 
-**5.** Try to set the color of all the text with ```setTextColor(int color)```.
+**5.** 可以用```setTextColor(int color)```来改变所有文字颜色。
 
-**6.** You can get the widgets in BlurLockView by:   
-1. ```public TextView getTitle() {return title;}``` to get the title.  
-2. ```public TextView getLeftButton() {return leftButton;}``` to get the left button.  
-3. ```public TextView getRightButton() {return rightButton;}``` to get the right button.  
-4. ```public BigButtonView[] getBigButtonViews() {return bigButtonViews;}``` to get the 10 number buttons in array.  
-5. ```public SmallButtonView[][] getSmallButtonViews() {return smallButtonViews;}``` to get all the text buttons in array. Notice that some buttons in the array is null. you can find all the real buttons by this:  
+**6.** 下面的函数可以获得BlurLockView的各个控件：    
+1. ```public TextView getTitle() {return title;}```获取标题控件。   
+2. ```public TextView getLeftButton() {return leftButton;}```获取左下角按钮控件。    
+3. ```public TextView getRightButton() {return rightButton;}```获取右下角按钮控件。    
+4. ```public BigButtonView[] getBigButtonViews() {return bigButtonViews;}```获取10个数字按钮控件。    
+5. ```public SmallButtonView[][] getSmallButtonViews() {return smallButtonViews;}``` 获取所有的字母按钮控件，注意有些数组元素为null，具体的控件下标如下表：    
     
 ```java
 private final char CHARS[][] = {
@@ -203,16 +203,16 @@ private final char CHARS[][] = {
 };
 ```
     
-### Incorrect Password
+### 错误密码
 
-BlurLockView counts for incorrect input times. You can use ```getIncorrectInputTimes()``` to get the times and use ```setIncorrectInputTimes(int incorrectInputTimes)``` to reset the times.
+BlurLockView会记录输入错误密码次数，可以用```getIncorrectInputTimes()```来获取当前错误密码次数，或者用```setIncorrectInputTimes(int incorrectInputTimes)```来重置次数。  
 
-# Versions
+# 版本
 ### 1.0.0  
 
 # Todo
-1. More animations.  
-2. Change the Password.TEXT to case-sensitive with other signals.
+1. 更多的动画效果。    
+2. 让字母密码输入类型可以输入大小写字母和其他特殊符号。
 
 # License
 
