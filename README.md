@@ -12,7 +12,17 @@ Lock view with blur effect. Easy to customise.
 
 # Usage
 
-[Demo](https://github.com/Nightonke/BlurLockView#demo)
+[Demo](https://github.com/Nightonke/BlurLockView#demo)  
+[Gradle](https://github.com/Nightonke/BlurLockView#gradle)  
+[Easy to Use](https://github.com/Nightonke/BlurLockView#easy-to-use)  
+[Show and Hide](https://github.com/Nightonke/BlurLockView#show-and-hide)  
+[Listeners](https://github.com/Nightonke/BlurLockView#listeners)  
+[Blur Effect](https://github.com/Nightonke/BlurLockView#blur-effect)  
+[Keyboard](https://github.com/Nightonke/BlurLockView#keyboard)  
+[Text](https://github.com/Nightonke/BlurLockView#text)  
+[Font](https://github.com/Nightonke/BlurLockView#font)  
+[Style](https://github.com/Nightonke/BlurLockView#style)  
+[style](https://github.com/Nightonke/BlurLockView#incorrect-password)  
 
 ### Demo
 
