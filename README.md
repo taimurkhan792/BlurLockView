@@ -22,7 +22,7 @@ Lock view with blur effect. Easy to customise.
 [Text](https://github.com/Nightonke/BlurLockView#text)  
 [Font](https://github.com/Nightonke/BlurLockView#font)  
 [Style](https://github.com/Nightonke/BlurLockView#style)  
-[style](https://github.com/Nightonke/BlurLockView#incorrect-password)  
+[Incorrect Password](https://github.com/Nightonke/BlurLockView#incorrect-password)  
 
 ### Demo
 
