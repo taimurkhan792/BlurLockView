@@ -4,6 +4,8 @@
 
 毛玻璃效果的解锁界面。
 
+# [English Version](https://github.com/Nightonke/BlurLockView)
+
 # 备注
 
 1. 使用了[500px-android-blur](https://github.com/500px/500px-android-blur)的毛玻璃效果。
@@ -12,17 +14,17 @@
 
 # 使用
 
-[Demo](https://github.com/Nightonke/BlurLockView#demo)  
-[Gradle](https://github.com/Nightonke/BlurLockView#gradle)  
-[Easy to Use](https://github.com/Nightonke/BlurLockView#easy-to-use)  
-[Show and Hide](https://github.com/Nightonke/BlurLockView#show-and-hide)  
-[Listeners](https://github.com/Nightonke/BlurLockView#listeners)  
-[Blur Effect](https://github.com/Nightonke/BlurLockView#blur-effect)  
-[Keyboard](https://github.com/Nightonke/BlurLockView#keyboard)  
-[Text](https://github.com/Nightonke/BlurLockView#text)  
-[Font](https://github.com/Nightonke/BlurLockView#font)  
-[Style](https://github.com/Nightonke/BlurLockView#style)  
-[Incorrect Password](https://github.com/Nightonke/BlurLockView#incorrect-password)  
+[Demo](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#demo)  
+[Gradle](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#gradle)  
+[快速使用](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#快速使用)  
+[显示和隐藏](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#显示和隐藏)  
+[Listeners](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#listeners)  
+[毛玻璃效果](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#毛玻璃效果)  
+[键盘](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#键盘)  
+[文本](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#文本)  
+[字体](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#字体)  
+[风格](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#风格)  
+[错误密码](https://github.com/Nightonke/BlurLockView/blob/master/README-ZH.md#错误密码)  
 
 ### Demo
 
