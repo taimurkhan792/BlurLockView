@@ -8,8 +8,11 @@ Lock view with blur effect. Easy to customise.
 
 1. The blur effect comes from [500px-android-blur](https://github.com/500px/500px-android-blur).
 2. More animations for showing or hiding the BlurLockView will be added.
+3. In the demo, I use [Material-Dialogs](https://github.com/afollestad/material-dialogs) for convenient.
 
 # Usage
+
+[Demo](https://github.com/Nightonke/BlurLockView#demo)
 
 ### Demo
 
@@ -89,13 +92,18 @@ public void onClick() {
     // The left button is being clicked
 }
 ```
+Implements the listeners above and then:  
+```java
+blurLockView.setOnLeftButtonClickListener(this);
+blurLockView.setOnPasswordInputListener(this);
+```
 Notice that the right button is set as "Backspace" usually, so there is not OnRightButtonClickListener.  
 
 ### Blur Effect
 
 You can set the effect of blur with 3 parameters.  
-1. **DownsampleFactor**, with ```setDownsampleFactor(int downsampleFactor)```, the smaller, the clearer.
-2. **BlurRadius**, with ```setBlurRadius(int blurRadius)```, the smaller, the clearer.
+1. **DownsampleFactor**, with ```setDownsampleFactor(int downsampleFactor)```, the smaller, the clearer.  
+2. **BlurRadius**, with ```setBlurRadius(int blurRadius)```, the smaller, the clearer.  
 3. **OverlayColor**, with ```setOverlayColor(int color)```, to change the overlay color of BlurLockView.
 
 Examples:  
@@ -128,7 +136,7 @@ You can set all the font of text with ```setTypeface(Typeface typeface)```.
 
 ### Style
 
-1. Set the background of buttons in Password.TEXT with ```setSmallButtonViewsBackground(int id)```. The default resource drawable is:  
+**1.** Set the background of buttons in Password.TEXT with ```setSmallButtonViewsBackground(int id)```. The default resource drawable is:  
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
@@ -151,3 +159,63 @@ You can set all the font of text with ```setTypeface(Typeface typeface)```.
     </item>
 </selector>
 ```
+
+**2.** Set the click effect of buttons in Password.TEXT with ```setBigButtonViewsClickEffect(int id)```. The default resource drawable is:  
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item >
+        <shape android:shape="oval"  >
+            <solid android:color="@color/default_button_press"/>
+        </shape>
+    </item>
+</selector>
+```
+**3.** When you click the buttoms in Password.TEXT, the effect above will disappear and you can set the duration by ```setSmallButtonViewsClickEffectDuration(int duration)```.
+
+**4.** Similarly, you can set the 3 styles of buttons in Password.NUMBER like above with ```setBigButtonViewsBackground(int id)```, ```setBigButtonViewsClickEffect(int id)``` and ```setBigButtonViewsClickEffectDuration(int duration)```.
+
+**5.** Try to set the color of all the text with ```setTextColor(int color)```.
+
+**6.** You can get the widgets in BlurLockView by:   
+1. ```public TextView getTitle() {return title;}``` to get the title.  
+2. ```public TextView getLeftButton() {return leftButton;}``` to get the left button.  
+3. ```public TextView getRightButton() {return rightButton;}``` to get the right button.  
+4. ```public BigButtonView[] getBigButtonViews() {return bigButtonViews;}``` to get the 10 number buttons in array.  
+5. ```public SmallButtonView[][] getSmallButtonViews() {return smallButtonViews;}``` to get all the text buttons in array. Notice that some buttons in the array is null. you can find all the real buttons by this:  
+    
+```java
+private final char CHARS[][] = {
+        {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
+        {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
+        {   'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'  },
+        {        'Z', 'X', 'C', 'V', 'B', 'N', 'M'       }
+};
+```
+    
+### Incorrect Password
+
+BlurLockView counts for incorrect input times. You can use ```getIncorrectInputTimes()``` to get the times and use ```setIncorrectInputTimes(int incorrectInputTimes)``` to reset the times.
+
+# Versions
+### 1.0.0  
+
+# Todo
+1. More animations.  
+2. Change the Password.TEXT to case-sensitive with other signals.
+
+# License
+
+    Copyright 2016 Nightonke
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
